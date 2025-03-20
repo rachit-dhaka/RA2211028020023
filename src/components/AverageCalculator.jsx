@@ -119,63 +119,64 @@ const AverageCalculator = () => {
     });
   };
   
+  const numberTypeLabels = {
+    p: 'Prime',
+    f: 'Fibonacci',
+    e: 'Even',
+    r: 'Random'
+  };
+  
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Average Calculator - Port 9876</h1>
-      
-      <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Request Number Data</h2>
+    <div className="min-h-screen bg-black text-white p-6" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif' }}>
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-2xl font-medium text-white mb-8">Average Calculator</h1>
         
-        <div className="mb-4">
-          <p className="text-gray-700 mb-2">Select Number Type:</p>
-          <div className="flex flex-wrap gap-3">
-            <button 
-              className={`px-4 py-2 rounded-md transition-colors ${numberType === 'p' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-              onClick={() => setNumberType('p')}
-            >
-              Prime (p)
-            </button>
-            <button 
-              className={`px-4 py-2 rounded-md transition-colors ${numberType === 'f' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-              onClick={() => setNumberType('f')}
-            >
-              Fibonacci (f)
-            </button>
-            <button 
-              className={`px-4 py-2 rounded-md transition-colors ${numberType === 'e' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-              onClick={() => setNumberType('e')}
-            >
-              Even (e)
-            </button>
-            <button 
-              className={`px-4 py-2 rounded-md transition-colors ${numberType === 'r' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-              onClick={() => setNumberType('r')}
-            >
-              Random (r)
-            </button>
+        <div className="bg-gray-900 rounded-xl shadow-lg p-6 mb-6 border border-gray-800">
+          <div className="mb-6">
+            <p className="text-sm font-medium text-gray-400 mb-3">Number Type</p>
+            <div className="flex justify-center gap-2 mb-6">
+              {Object.entries(numberTypeLabels).map(([key, label]) => (
+                <button 
+                  key={key}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    numberType === key 
+                      ? 'bg-blue-500 text-white' 
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+                  onClick={() => setNumberType(key)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-        
-        <div className="flex gap-3">
-          <button 
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition-colors disabled:opacity-50"
-            onClick={fetchData}
-            disabled={loading}
-          >
-            {loading ? 'Processing...' : 'Fetch Numbers'}
-          </button>
           
-          <div className="ml-4 border-l pl-4">
-            <p className="text-sm text-gray-500 mb-2">Test Case Simulation:</p>
-            <div className="flex gap-2">
+          <div className="flex flex-col items-center gap-4">
+            <button 
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-full text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              onClick={fetchData}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing...
+                </>
+              ) : 'Fetch Numbers'}
+            </button>
+            
+            <div className="flex gap-3 w-full justify-center">
               <button 
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm"
+                className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-2 rounded-full text-xs font-medium transition-all"
                 onClick={simulateFirstTestCase}
               >
                 Test Case 1
               </button>
               <button 
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm"
+                className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-2 rounded-full text-xs font-medium transition-all"
                 onClick={simulateSecondTestCase}
               >
                 Test Case 2
@@ -183,62 +184,62 @@ const AverageCalculator = () => {
             </div>
           </div>
         </div>
-      </div>
-      
-      {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md">
-          {error}
-        </div>
-      )}
-      
-      {result && (
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">Result</h2>
-          
-          <div className="mb-6">
-            <h3 className="font-medium mb-2 text-gray-700">API Endpoint:</h3>
-            <div className="bg-gray-100 p-3 rounded text-blue-600 font-mono">
-              http://localhost:9876/numbers/{numberType}
-            </div>
+        
+        {error && (
+          <div className="bg-red-900 border-l-4 border-red-500 text-red-200 p-4 mb-6 rounded-lg text-sm">
+            {error}
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h3 className="font-medium mb-2 text-gray-700">windowPrevState:</h3>
-              <div className="bg-white p-3 rounded border">
-                {result.windowPrevState.length > 0 ? 
-                  `[${result.windowPrevState.join(', ')}]` : 
-                  '[]'}
+        )}
+        
+        {result && (
+          <div className="bg-gray-900 rounded-xl shadow-lg overflow-hidden border border-gray-800">
+            <div className="border-b border-gray-800 p-4">
+              <div className="text-sm font-medium text-gray-400">API Endpoint</div>
+              <div className="mt-1 text-sm font-mono bg-gray-800 p-2 rounded text-blue-400 overflow-x-auto">
+                http://localhost:9876/numbers/{numberType}
               </div>
             </div>
             
-            <div className="bg-gray-50 p-4 rounded-md">
-              <h3 className="font-medium mb-2 text-gray-700">windowCurrState:</h3>
-              <div className="bg-white p-3 rounded border">
-                {result.windowCurrState.length > 0 ? 
-                  `[${result.windowCurrState.join(', ')}]` : 
-                  '[]'}
+            <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-gray-800 rounded-lg p-4">
+                <div className="text-sm font-medium text-gray-400 mb-2">Previous Window</div>
+                <div className="bg-gray-900 border border-gray-700 rounded p-3 text-sm font-mono overflow-x-auto text-gray-300">
+                  {result.windowPrevState.length > 0 ? 
+                    `[${result.windowPrevState.join(', ')}]` : 
+                    '[]'}
+                </div>
+              </div>
+              
+              <div className="bg-gray-800 rounded-lg p-4">
+                <div className="text-sm font-medium text-gray-400 mb-2">Current Window</div>
+                <div className="bg-gray-900 border border-gray-700 rounded p-3 text-sm font-mono overflow-x-auto text-gray-300">
+                  {result.windowCurrState.length > 0 ? 
+                    `[${result.windowCurrState.join(', ')}]` : 
+                    '[]'}
+                </div>
+              </div>
+            </div>
+            
+            <div className="px-4 pb-4">
+              <div className="bg-gray-800 rounded-lg p-4">
+                <div className="text-sm font-medium text-gray-400 mb-2">Fetched Numbers</div>
+                <div className="bg-gray-900 border border-gray-700 rounded p-3 text-sm font-mono overflow-x-auto text-gray-300">
+                  {result.numbers.length > 0 ? 
+                    `[${result.numbers.join(', ')}]` : 
+                    '[]'}
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-blue-900 p-4 border-t border-blue-800">
+              <div className="flex justify-between items-center">
+                <div className="text-sm font-medium text-blue-300">Average</div>
+                <div className="text-2xl font-medium text-blue-200">{result.avg}</div>
               </div>
             </div>
           </div>
-          
-          <div className="bg-gray-50 p-4 rounded-md mb-4">
-            <h3 className="font-medium mb-2 text-gray-700">numbers:</h3>
-            <div className="bg-white p-3 rounded border">
-              {result.numbers.length > 0 ? 
-                `[${result.numbers.join(', ')}]` : 
-                '[]'}
-            </div>
-          </div>
-          
-          <div className="bg-blue-50 p-4 rounded-md">
-            <h3 className="font-medium mb-2 text-gray-700">avg:</h3>
-            <div className="bg-white p-3 rounded border text-xl font-bold text-blue-600">
-              {result.avg}
-            </div>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
